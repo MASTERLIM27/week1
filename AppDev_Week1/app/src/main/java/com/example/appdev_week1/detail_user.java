@@ -3,6 +3,8 @@ package com.example.appdev_week1;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -70,11 +72,27 @@ public class detail_user extends AppCompatActivity {
         detail_button_delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                list.remove(position);
-                Intent intent = new Intent(detail_user.this,MainActivity.class);
-                intent.putParcelableArrayListExtra("arraylist",list);
-                startActivity(intent);
-                finish();
+                new AlertDialog.Builder(detail_user.this)
+                        .setIcon(R.drawable.delete2)
+                        .setTitle("Apakah Anda Yakin Ingin Menghapus "+ list.get(position).getName() +" ?")
+                        .setMessage("Semua data "+ list.get(position).getName() +" akan terhapus")
+                        .setPositiveButton("ok", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                list.remove(position);
+                                Intent intent = new Intent(detail_user.this,MainActivity.class);
+                                intent.putParcelableArrayListExtra("arraylist",list);
+                                startActivity(intent);
+                                finish();
+                            }
+                        })
+                        .setNegativeButton("cancel", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        })
+                        .create().show();
             }
         });
     }

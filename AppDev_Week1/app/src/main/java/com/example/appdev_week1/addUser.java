@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ProgressBar;
 
 import com.google.android.material.textfield.TextInputLayout;
 
@@ -21,6 +22,7 @@ public class addUser extends AppCompatActivity {
     private Button add_button_save;
     private Toolbar add_toolbar;
     private ArrayList<user> list;
+    private ProgressBar add_progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,6 +38,7 @@ public class addUser extends AppCompatActivity {
         add_textInputLayout_address = findViewById(R.id.add_textInputLayout_address);
         add_button_save = findViewById(R.id.add_button_save);
         add_toolbar = findViewById(R.id.add_toolbar);
+        add_progressBar = findViewById(R.id.add_progressBar);
     }
 
     private void setListener(){
@@ -47,9 +50,12 @@ public class addUser extends AppCompatActivity {
         }
         String condition = intent.getStringExtra("condition");
         if(condition.equalsIgnoreCase("add")){
+            add_toolbar.setTitle("Add User");
+            add_button_save.setText("Save Data");
             add_button_save.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    add_progressBar.setVisibility(View.VISIBLE);
                     String name = add_textInputLayout_name.getEditText().getText().toString().trim();
                     String age = add_textInputLayout_age.getEditText().getText().toString().trim();
                     String address = add_textInputLayout_address.getEditText().getText().toString().trim();
@@ -59,22 +65,25 @@ public class addUser extends AppCompatActivity {
                     handler.postDelayed(new Runnable() {
                         @Override
                         public void run() {
+                            add_progressBar.setVisibility(View.GONE);
                             Intent intent = new Intent(addUser.this,MainActivity.class);
                             intent.putExtra("arraylist",list);
                             startActivity(intent);
                             finish();
                         }
                     },1000);
-
                 }
             });
         }else if(condition.equalsIgnoreCase("edit")){
+            add_toolbar.setTitle("Edit User");
+            add_button_save.setText("Update Data");
             add_textInputLayout_name.getEditText().setText(list.get(position).getName());
             add_textInputLayout_age.getEditText().setText(list.get(position).getAge());
             add_textInputLayout_address.getEditText().setText(list.get(position).getAddress());
             add_button_save.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    add_progressBar.setVisibility(View.VISIBLE);
                     String name = add_textInputLayout_name.getEditText().getText().toString().trim();
                     String age = add_textInputLayout_age.getEditText().getText().toString().trim();
                     String address = add_textInputLayout_address.getEditText().getText().toString().trim();
@@ -84,6 +93,7 @@ public class addUser extends AppCompatActivity {
                     handler.postDelayed(new Runnable() {
                         @Override
                         public void run() {
+                            add_progressBar.setVisibility(View.GONE);
                             Intent intent = new Intent(addUser.this,MainActivity.class);
                             intent.putExtra("arraylist",list);
                             startActivity(intent);
